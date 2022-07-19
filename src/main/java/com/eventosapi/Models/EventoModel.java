@@ -56,7 +56,7 @@ public class EventoModel implements Serializable {
 	public static Long getSerialversionuid() {
 		return serialversionUID;
 	}
-	@OneToMany
+	@OneToMany(mappedBy="evento",cascade=CascadeType.REMOVE)
 	private List<ConvidadoModel> convidados;
 	
 }

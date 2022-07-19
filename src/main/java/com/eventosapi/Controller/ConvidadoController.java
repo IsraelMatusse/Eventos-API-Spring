@@ -41,4 +41,9 @@ public class ConvidadoController {
 		return  convidado1;
 	
 	}
+	@RequestMapping("/ApagarConvidado")
+	public void ApagarConvidado(@RequestParam ("biconvidado") String biconvidado, ConvidadoModel convidado) {
+		ConvidadoModel apagconvid=cvr.findByBiconvidado(biconvidado);
+		cvr.delete(apagconvid);
+	}
 }

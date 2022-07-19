@@ -9,5 +9,5 @@ import com.eventosapi.Models.EventoModel;
 @Repository
 public interface ConvidadoRepository extends JpaRepository <ConvidadoModel, String> {
 	Iterable <ConvidadoModel> findByEvento(EventoModel evento);
-
+	ConvidadoModel findByBiconvidado(String biconvidado);
 }
