@@ -53,13 +53,6 @@ public class EventoController {
 		return evento;
 	}
 
-/*	@RequestMapping("/CadastrarConvidado")
-	public ConvidadoModel CadastrarConvidado(@RequestParam ("codigo") Long codigo, ConvidadoModel convidado) {
-		EventoModel evento= evr.findByCodigo(codigo);
-		convidado.setEvento(evento);
-		return cvr.save(convidado);
-	}
-	*/
 	@RequestMapping("/ApagarEvento")
 	public void ApagarEvento(@RequestParam ("codigo") Long codigo, EventoModel evento) {
 		EventoModel apagevento=evr.findByCodigo(codigo);

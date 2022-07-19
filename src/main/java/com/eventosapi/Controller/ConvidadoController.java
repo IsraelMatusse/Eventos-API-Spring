@@ -45,5 +45,6 @@ public class ConvidadoController {
 	public void ApagarConvidado(@RequestParam ("biconvidado") String biconvidado, ConvidadoModel convidado) {
 		ConvidadoModel apagconvid=cvr.findByBiconvidado(biconvidado);
 		cvr.delete(apagconvid);
+		
 	}
 }
