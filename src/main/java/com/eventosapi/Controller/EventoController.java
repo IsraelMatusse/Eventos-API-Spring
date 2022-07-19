@@ -1,6 +1,7 @@
 package com.eventosapi.Controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -57,6 +58,17 @@ public class EventoController {
 	public void ApagarEvento(@RequestParam ("codigo") Long codigo, EventoModel evento) {
 		EventoModel apagevento=evr.findByCodigo(codigo);
 		evr.delete(apagevento);
+	}
+	
+	@PostMapping("/ActualizarEvento")
+	public void actualizarevento(@RequestParam ("codigo") Long codigo,@RequestBody EventoModel eventoed) {
+		Optional<EventoModel> evento= Optional.ofNullable(evr.findByCodigo(codigo));
+		evento.get().setNomeevento(eventoed.getNomeevento());
+		evento.get().setData(eventoed.getData());
+		evento.get().setLocal(eventoed.getLocal());
+		evento.get().setHora(eventoed.getHora());
+		evr.save(evento.get());
+		
 	}
 	
 }
