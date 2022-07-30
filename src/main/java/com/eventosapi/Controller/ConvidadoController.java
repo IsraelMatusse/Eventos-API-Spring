@@ -1,6 +1,7 @@
 package com.eventosapi.Controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,9 +45,25 @@ public class ConvidadoController {
 	@RequestMapping("/ApagarConvidado")
 	public void ApagarConvidado(@RequestParam ("biconvidado") String biconvidado, ConvidadoModel convidado) {
 		ConvidadoModel apagconvid=cvr.findByBiconvidado(biconvidado);
-		cvr.delete(apagconvid)
+		cvr.delete(apagconvid);
+		
+	}
 	
-		;
+	@PostMapping("/ActualizarConvidado")
+	public void ActualizarEvento(@RequestParam ("biconvidado") String biconvidado, @RequestBody ConvidadoModel convidadoed, EventoModel evento) {
+		Optional<ConvidadoModel> convidado= Optional.ofNullable(cvr.findByBiconvidado(biconvidado));
+		convidado.get().setNomeconvidado(convidadoed.getNomeconvidado());
+		convidado.get().setMoradaconvidado(convidadoed.getMoradaconvidado());
+		convidado.get().setEvento(convidadoed.getEvento());
+		cvr.save(convidado.get());
+		
+		
+	}
+	
+	@RequestMapping("/SearchByBi")
+	public ConvidadoModel SearchByBi(@RequestParam("biconvidado") String biconvidado, ConvidadoModel convidado) {
+		convidado= cvr.findByBiconvidado(biconvidado);
+		return convidado;
 		
 	}
 }
