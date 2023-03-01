@@ -5,9 +5,11 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,10 +25,11 @@ public class ConvidadoController {
 	private ConvidadoRepository cvr;
 	private EventoModel em;
 	
-	@PostMapping("/CadastrarConvidado")
-	public ConvidadoModel CadastrarConvidado(@RequestParam ("codigo") Long codigo,  @RequestBody ConvidadoModel convidado, EventoModel evento) {
+	@RequestMapping(value="/CadastrarConvidado", method= RequestMethod.POST)
+	public ConvidadoModel CadastrarConvidado(@PathVariable ("codigo") Long codigo, ConvidadoModel convidado, EventoModel evento) {
 		convidado.setEvento(evento);
 		return cvr.save(convidado);
+		
 		
 	}
 	

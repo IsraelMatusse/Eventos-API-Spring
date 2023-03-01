@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.eventosapi.Models.ConvidadoModel;
 import com.eventosapi.Models.EventoModel;
@@ -22,8 +23,7 @@ import com.eventosapi.Repository.EventoRepository;
 
 
 
-@RestController
-@RequestMapping("Evento")
+@Controller
 public class EventoController {
 	
 	@Autowired
@@ -31,16 +31,47 @@ public class EventoController {
 	@Autowired
 	private ConvidadoRepository cvr;
 	
+	@RequestMapping(value="/cadastrarEvento", method=RequestMethod.GET)
+	public String form() {
+		return "evento/form";
+	}
+	
 	@GetMapping("/Listar")
 	public List <EventoModel> Listar() {
 		return evr.findAll();
 	}
 	
 
-	@PostMapping("/Cadastrar")
-	public EventoModel cadastrar(@RequestBody EventoModel evento){
-		return evr.save(evento);
+	@RequestMapping(value="/cadastrarEvento", method=RequestMethod.POST)
+	public String form( EventoModel evento){
+		evr.save(evento);
+		return "redirect:/cadastrarEvento";
 	}
+	
+	@RequestMapping("/eventos")
+	public ModelAndView ListaEventos() {
+		ModelAndView mv= new ModelAndView("index");
+		Iterable<EventoModel> eventos= evr.findAll();
+		mv.addObject("eventos", eventos);
+		return mv;
+	}
+	
+	@RequestMapping("/{codigo}")
+	public ModelAndView detalhesEvento(@PathVariable ("codigo") Long codigo) {
+		EventoModel evento= evr.findByCodigo(codigo);
+		ModelAndView mv= new ModelAndView("evento/detalhesEvento");
+		mv.addObject("evento", evento);
+		return mv;
+	}
+	@RequestMapping(value="/{codigo}", method= RequestMethod.POST)
+	public String detalhesEvento(@PathVariable ("codigo") Long codigo, ConvidadoModel convidado) {
+		EventoModel evento=evr.findByCodigo(codigo);
+		convidado.setEvento(evento);
+		cvr.save(convidado);
+		return "redirect:/{codigo}";
+		
+	}
+	
 	
 	@RequestMapping("/SearchByCod")
 	public EventoModel SearchByCod(@RequestParam ("codigo") Long codigo) {
@@ -70,5 +101,6 @@ public class EventoController {
 		evr.save(evento.get());
 		
 	}
+	
 	
 }
